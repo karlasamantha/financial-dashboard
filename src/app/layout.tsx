@@ -1,17 +1,7 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import StyledComponentsRegistry from '@/lib/registry';
-import Provider from '@/components/ui/provider';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import UIProvider from '@/components/ui/provider';
+import { FilterProvider } from '@/context/FilterContext';
 
 export const metadata: Metadata = {
   title: 'Financial Dashboard',
@@ -25,9 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <StyledComponentsRegistry>
-          <Provider>{children}</Provider>
+          <UIProvider>
+            <FilterProvider>{children}</FilterProvider>
+          </UIProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
