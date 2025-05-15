@@ -27,7 +27,7 @@ export default function Home() {
           justifyContent="space-between"
         >
           <Text fontSize="2xl" fontWeight="bold">
-            FinanceDash
+            FinDash
           </Text>
           <Button
             bg="indigo"
@@ -61,10 +61,11 @@ export default function Home() {
           >
             <Box flex="1" textAlign={{ base: 'center', md: 'left' }}>
               <Text as="h1" fontSize="4xl" fontWeight="bold" mb={4}>
-                Mange Your Finances with Confidence
+                Gerencie suas finanças com confiança
               </Text>
               <Text fontSize="lg" color="gray.600">
-                Take control of your finances with our easy-to-use platform.
+                Gerencie suas finanças com confiança com nossa plataforma fácil
+                de usar.
               </Text>
             </Box>
             <Box
@@ -98,7 +99,8 @@ export default function Home() {
         flexShrink={0}
       >
         <Text fontSize="sm" color="gray.500">
-          &copy; {new Date().getFullYear()} FinanceDash. All rights reserved.
+          &copy; {new Date().getFullYear()} FinDash. Todos os direitos
+          reservados.
         </Text>
       </Box>
     </Flex>

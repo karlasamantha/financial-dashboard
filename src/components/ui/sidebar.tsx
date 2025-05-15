@@ -60,7 +60,7 @@ export default function Sidebar({
     <SidebarContainer>
       <SidebarHeader>
         <Text fontSize="2xl" fontWeight="bold" as="h2" color="indigo">
-          Finance
+          FinDash
         </Text>
 
         <Button onClick={onClose} size="sm" variant="ghost">
