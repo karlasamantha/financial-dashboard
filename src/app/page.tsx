@@ -59,7 +59,7 @@ export default function Home() {
             minH="320px"
             width="100%"
           >
-            <Box flex="1" textAlign={{ base: 'center', md: 'left' }}>
+            <Box flex={1} textAlign={{ base: 'center', md: 'left' }}>
               <Text as="h1" fontSize="4xl" fontWeight="bold" mb={4}>
                 Gerencie suas finanças com confiança
               </Text>
@@ -68,18 +68,27 @@ export default function Home() {
                 de usar.
               </Text>
             </Box>
+
             <Box
-              flex="1"
+              flex={1}
               display="flex"
               alignItems="center"
               justifyContent="center"
+              borderRadius="md"
+              shadow="md"
+              overflow="hidden"
+              bg="white"
+              height={{ base: '200px', md: '350px' }}
+              minH="450px"
+              p={0}
+              w="100%"
+              position="relative"
             >
               <Image
-                src="https://placehold.co/320x220/png"
+                src="/dash.png"
                 alt="Dashboard"
-                width={320}
-                height={220}
-                style={{ borderRadius: '12px', objectFit: 'cover' }}
+                fill
+                style={{ objectFit: 'inherit' }}
                 priority
               />
             </Box>

@@ -57,12 +57,11 @@ export default function BarChart({
       p={4}
       shadow="md"
       overflow="hidden"
-      width="100%"
-      minH="320px"
     >
       <Heading as="h3" fontSize="xl" fontWeight="bold" mb={4}>
         {title}
       </Heading>
+
       <Chart.Root maxH="md" chart={chart}>
         <ResponsiveContainer>
           <RechartsBarChart data={chart.data}>
