@@ -23,6 +23,7 @@ import StatsCard from '@/components/ui/stats-card';
 import SelectFilter from '@/components/ui/select-filter';
 import BarChart from '@/components/ui/bar-chart';
 import LineChart from '@/components/ui/line-chart';
+import TransactionTable from '@/components/ui/transaction-table';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { formatCurrencyBRL } from '@/lib/currency';
@@ -40,6 +41,7 @@ export default function DashboardPage() {
     uniqueCollections,
     groupedByMonth,
     balanceOverTime,
+    getLastTransactions,
   } = useTransactionsData();
 
   const accounts = createListCollection({
@@ -142,100 +144,104 @@ export default function DashboardPage() {
 
           <Box
             as="section"
-            display="flex"
-            flexDirection="row"
-            gap={2}
+            display="block"
+            width="100%"
+            overflowX="auto"
             p={4}
             borderRadius="md"
             shadow="md"
             backgroundColor="white"
-            alignItems="end"
-            justifyContent="center"
-            overflowX={{ base: 'auto', md: 'visible' }}
-            whiteSpace={{ base: 'nowrap', md: 'normal' }}
           >
-            <Field.Root flex={1} minW={0}>
-              <Field.Label>Data inicial</Field.Label>
-              <Input
-                type="date"
-                size="sm"
-                value={filters.startDateParam ?? ''}
-                onChange={(e) =>
-                  setFilters((f) => ({
-                    ...f,
-                    startDateParam: e.target.value || null,
-                  }))
-                }
-              />
-            </Field.Root>
-
-            <Field.Root flex={1} minW={0}>
-              <Field.Label>Data final</Field.Label>
-              <Input
-                type="date"
-                size="sm"
-                value={filters.endDateParam ?? ''}
-                onChange={(e) =>
-                  setFilters((f) => ({
-                    ...f,
-                    endDateParam: e.target.value || null,
-                  }))
-                }
-              />
-            </Field.Root>
-
-            <SelectFilter
-              label="Conta"
-              placeholder="Todas as contas"
-              collection={accounts}
-              value={filters.account}
-              onChange={(val) => setFilters((f) => ({ ...f, account: val }))}
-              size="sm"
-              flex={1}
-              minW={0}
-            />
-
-            <SelectFilter
-              label="Indústrias"
-              placeholder="Todas as indústrias"
-              collection={industries}
-              value={filters.industry}
-              onChange={(val) => setFilters((f) => ({ ...f, industry: val }))}
-              size="sm"
-              flex={1}
-              minW={0}
-            />
-
-            <SelectFilter
-              label="Estado"
-              placeholder="Todos os estados"
-              collection={states}
-              value={filters.state}
-              onChange={(val) => setFilters((f) => ({ ...f, state: val }))}
-              size="sm"
-              flex={1}
-              minW={0}
-            />
-
-            <Button
-              variant="solid"
-              bg="indigo"
-              color="white"
-              size="sm"
-              flex={1}
-              minW={0}
-              onClick={() =>
-                setFilters({
-                  startDateParam: null,
-                  endDateParam: null,
-                  account: null,
-                  industry: null,
-                  state: null,
-                })
-              }
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap={4}
+              alignItems="end"
+              whiteSpace="nowrap"
             >
-              Limpar
-            </Button>
+              <Field.Root flex={1} minW={120}>
+                <Field.Label>Data inicial</Field.Label>
+                <Input
+                  type="date"
+                  size="sm"
+                  value={filters.startDateParam ?? ''}
+                  onChange={(e) =>
+                    setFilters((f) => ({
+                      ...f,
+                      startDateParam: e.target.value || null,
+                    }))
+                  }
+                />
+              </Field.Root>
+
+              <Field.Root flex={1} minW={120}>
+                <Field.Label>Data final</Field.Label>
+                <Input
+                  type="date"
+                  size="sm"
+                  value={filters.endDateParam ?? ''}
+                  onChange={(e) =>
+                    setFilters((f) => ({
+                      ...f,
+                      endDateParam: e.target.value || null,
+                    }))
+                  }
+                />
+              </Field.Root>
+
+              <SelectFilter
+                label="Conta"
+                placeholder="Todas as contas"
+                collection={accounts}
+                value={filters.account}
+                onChange={(val) => setFilters((f) => ({ ...f, account: val }))}
+                size="sm"
+                flex={1}
+                minW={160}
+              />
+
+              <SelectFilter
+                label="Indústrias"
+                placeholder="Todas as indústrias"
+                collection={industries}
+                value={filters.industry}
+                onChange={(val) => setFilters((f) => ({ ...f, industry: val }))}
+                size="sm"
+                flex={1}
+                minW={160}
+              />
+
+              <SelectFilter
+                label="Estado"
+                placeholder="Todos os estados"
+                collection={states}
+                value={filters.state}
+                onChange={(val) => setFilters((f) => ({ ...f, state: val }))}
+                size="sm"
+                flex={1}
+                minW={140}
+              />
+
+              <Button
+                variant="solid"
+                bg="indigo"
+                color="white"
+                size="sm"
+                flex={1}
+                minW={100}
+                onClick={() =>
+                  setFilters({
+                    startDateParam: null,
+                    endDateParam: null,
+                    account: null,
+                    industry: null,
+                    state: null,
+                  })
+                }
+              >
+                Limpar
+              </Button>
+            </Box>
           </Box>
 
           <Box
@@ -254,6 +260,15 @@ export default function DashboardPage() {
               title="Saldo Acumulado"
               flex={1}
             />
+          </Box>
+
+          <Box
+            as="section"
+            display="flex"
+            flexDirection={{ base: 'column', md: 'row' }}
+            gap={4}
+          >
+            <TransactionTable transactions={getLastTransactions(10)} />
           </Box>
         </Box>
       </Box>

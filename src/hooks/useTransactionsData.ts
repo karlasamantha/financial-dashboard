@@ -56,7 +56,7 @@ export function useTransactionsData() {
       pendingCount = 0;
 
     filteredTransactions.forEach(({ amount, transaction_type }) => {
-      const val = parseFloat(amount);
+      const val = parseInt(amount, 10) / 100;
       if (amount === '0') {
         pendingCount++;
       } else if (transaction_type === 'deposit') {
@@ -95,7 +95,7 @@ export function useTransactionsData() {
     >;
 
     filteredTransactions.forEach(({ date, amount, transaction_type }) => {
-      const value = parseFloat(amount);
+      const value = parseInt(amount, 10) / 100;
       if (isNaN(value) || value === 0) return;
 
       const transactionDate = new Date(date);
@@ -121,16 +121,24 @@ export function useTransactionsData() {
       return transactionDateA - transactionDateB;
     });
 
-    let running = 0;
+    let accumulatedBalance = 0;
     return sorted.map(({ date, amount, transaction_type }) => {
-      const value = parseFloat(amount);
-      if (transaction_type === 'deposit') running += value;
-      else if (transaction_type === 'withdraw') running -= Math.abs(value);
+      const value = parseInt(amount, 10) / 100;
+      if (transaction_type === 'deposit') accumulatedBalance += value;
+      else if (transaction_type === 'withdraw')
+        accumulatedBalance -= Math.abs(value);
 
       const formattedDate = new Date(date).toISOString().split('T')[0];
-      return { date: formattedDate, balance: running };
+      return { date: formattedDate, balance: accumulatedBalance };
     });
   }, [filteredTransactions]);
+
+  // Retorna as n últimas transações filtradas, ordenadas por data decrescente
+  function getLastTransactions(n: number) {
+    return [...filteredTransactions]
+      .sort((a, b) => b.date - a.date)
+      .slice(0, n);
+  }
 
   return {
     items: filteredTransactions,
@@ -140,5 +148,6 @@ export function useTransactionsData() {
     uniqueCollections,
     groupedByMonth,
     balanceOverTime,
+    getLastTransactions,
   };
 }
