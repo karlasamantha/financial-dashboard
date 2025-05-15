@@ -8,3 +8,9 @@ export async function GET() {
   const sessionPayload = await decrypt(session);
   return NextResponse.json({ loggedIn: !!sessionPayload });
 }
+
+export async function POST() {
+  const cookieStore = await cookies();
+  cookieStore.delete('session');
+  return NextResponse.json({ success: true });
+}

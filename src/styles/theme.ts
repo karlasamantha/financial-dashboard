@@ -1,10 +1,15 @@
 import { defineConfig, createSystem, defaultConfig } from '@chakra-ui/react';
 
+export const BREAKPOINTS = {
+  sm: 768,
+  md: 900,
+};
+
 export const theme = defineConfig({
   theme: {
     breakpoints: {
-      sm: '600px',
-      md: '900px',
+      sm: `${BREAKPOINTS.sm}px`,
+      md: `${BREAKPOINTS.md}px`,
     },
     tokens: {
       colors: {
