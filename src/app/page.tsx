@@ -3,9 +3,19 @@
 import { Box, Flex, Container, Text, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useSessionStatus } from '@/hooks/useSessionStatus';
 
 export default function Home() {
   const router = useRouter();
+  const { loggedIn, loading } = useSessionStatus();
+
+  const handleButtonClick = () => {
+    if (loggedIn) {
+      router.push('/dashboard');
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <Flex minH="100vh" direction="column">
@@ -24,9 +34,10 @@ export default function Home() {
             color="white"
             fontWeight="600"
             _hover={{ bg: 'indigo.500' }}
-            onClick={() => router.push('/login')}
+            onClick={handleButtonClick}
+            loading={loading}
           >
-            Login
+            {loading ? '' : loggedIn ? 'Dashboard' : 'Login'}
           </Button>
         </Container>
       </Box>

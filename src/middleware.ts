@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { decrypt } from '@/lib/session';
 
 const protectedRoutes = ['/dashboard'];
-const protectedAPIs = ['/api/data'];
+const protectedAPIs = ['/api/data', '/api/session'];
 const publicRoutes = ['/login'];
 
 export default async function middleware(request: NextRequest) {
