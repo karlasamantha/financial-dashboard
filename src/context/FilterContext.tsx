@@ -10,8 +10,8 @@ import {
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export interface Filters {
-  startDateString: string | null;
-  endDateString: string | null;
+  startDateParam: string | null;
+  endDateParam: string | null;
   account: string | null;
   industry: string | null;
   state: string | null;
@@ -23,8 +23,8 @@ interface FilterContextValue {
 }
 
 const defaultFilters: Filters = {
-  startDateString: null,
-  endDateString: null,
+  startDateParam: null,
+  endDateParam: null,
   account: null,
   industry: null,
   state: null,

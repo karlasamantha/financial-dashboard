@@ -16,11 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <StyledComponentsRegistry>
-          <UIProvider>
+        <UIProvider>
+          <StyledComponentsRegistry>
             <FilterProvider>{children}</FilterProvider>
-          </UIProvider>
-        </StyledComponentsRegistry>
+          </StyledComponentsRegistry>
+        </UIProvider>
       </body>
     </html>
   );
