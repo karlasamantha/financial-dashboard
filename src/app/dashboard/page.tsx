@@ -41,7 +41,10 @@ export default function DashboardPage() {
     uniqueCollections,
     groupedByMonth,
     balanceOverTime,
-    getLastTransactions,
+    paginatedItems,
+    currentPage,
+    setCurrentPage,
+    totalPages,
   } = useTransactionsData();
 
   const accounts = createListCollection({
@@ -239,6 +242,8 @@ export default function DashboardPage() {
                     state: null,
                   })
                 }
+                loading={isLoading}
+                disabled={isLoading}
               >
                 Limpar
               </Button>
@@ -272,9 +277,35 @@ export default function DashboardPage() {
             gap={4}
           >
             <TransactionTable
-              transactions={getLastTransactions(10)}
+              transactions={paginatedItems}
               isLoading={isLoading}
             />
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap={2}
+            mt={2}
+          >
+            <Button
+              size="sm"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </Button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <Button
+              size="sm"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Próxima
+            </Button>
           </Box>
         </Box>
       </Box>

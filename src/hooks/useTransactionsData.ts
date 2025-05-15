@@ -27,7 +27,7 @@ export function useTransactionsData() {
   const endpoint = `/api/data`;
   const { data, error, isLoading } = useSWR<{
     data: Transaction[];
-  }>(endpoint, fetcher);
+  }>(endpoint, fetcher, { dedupingInterval: 3600 * 1000 });
 
   // Aplicar filtros do dashboard
   const filteredTransactions = React.useMemo(() => {
@@ -148,10 +148,31 @@ export function useTransactionsData() {
       }));
   }
 
+  // Paginação client-side
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(20); // 20 por página por padrão
+
+  const totalPages = Math.ceil(filteredTransactions.length / pageSize);
+
+  const paginatedItems = React.useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    return filteredTransactions.slice(start, end).map((transaction) => ({
+      ...transaction,
+      amountFormatted: parseInt(transaction.amount, 10) / 100,
+    }));
+  }, [filteredTransactions, currentPage, pageSize]);
+
   return {
     items: filteredTransactions,
+    paginatedItems,
     isLoading,
     error,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    totalPages,
     summaryData,
     uniqueCollections,
     groupedByMonth,
