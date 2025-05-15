@@ -21,12 +21,14 @@ interface BarChartProps {
   }>;
   flex?: number;
   title: string;
+  isLoading?: boolean;
 }
 
 export default function BarChart({
   groupedByMonth,
   flex,
   title,
+  isLoading = false,
 }: BarChartProps) {
   const seriesLabels: Record<string, string> = {
     deposits: 'Depósitos',
@@ -61,32 +63,42 @@ export default function BarChart({
       <Heading as="h3" fontSize="xl" fontWeight="bold" mb={4}>
         {title}
       </Heading>
-
-      <Chart.Root maxH="md" chart={chart}>
-        <ResponsiveContainer>
-          <RechartsBarChart data={chart.data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <Tooltip
-              formatter={(value, name) => [
-                formatCurrencyBRL(Number(value)),
-                seriesLabels[name as string] || name,
-              ]}
-            />
-            <Legend
-              formatter={(_value) => seriesLabels[_value as string] || _value}
-            />
-            {chart.series.map((item) => (
-              <Bar
-                key={item.name}
-                dataKey={chart.key(item.name)}
-                fill={chart.color(item.color)}
-                stackId={item.stackId}
-              ></Bar>
-            ))}
-          </RechartsBarChart>
-        </ResponsiveContainer>
-      </Chart.Root>
+      {isLoading ? (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          minH="200px"
+        >
+          Carregando...
+        </Box>
+      ) : (
+        <Chart.Root maxH="md" chart={chart}>
+          <ResponsiveContainer>
+            <RechartsBarChart data={chart.data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <Tooltip
+                formatter={(value, name) => [
+                  formatCurrencyBRL(Number(value)),
+                  seriesLabels[name as string] || name,
+                ]}
+              />
+              <Legend
+                formatter={(_value) => seriesLabels[_value as string] || _value}
+              />
+              {chart.series.map((item) => (
+                <Bar
+                  key={item.name}
+                  dataKey={chart.key(item.name)}
+                  fill={chart.color(item.color)}
+                  stackId={item.stackId}
+                ></Bar>
+              ))}
+            </RechartsBarChart>
+          </ResponsiveContainer>
+        </Chart.Root>
+      )}
     </Box>
   );
 }

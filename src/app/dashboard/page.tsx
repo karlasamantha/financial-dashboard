@@ -255,11 +255,13 @@ export default function DashboardPage() {
               groupedByMonth={groupedByMonth}
               title="Depósitos x Saques"
               flex={1}
+              isLoading={isLoading}
             />
             <LineChart
               data={balanceOverTime}
               title="Saldo Acumulado"
               flex={1}
+              isLoading={isLoading}
             />
           </Box>
 
@@ -269,7 +271,10 @@ export default function DashboardPage() {
             flexDirection={{ base: 'column', md: 'row' }}
             gap={4}
           >
-            <TransactionTable transactions={getLastTransactions(10)} />
+            <TransactionTable
+              transactions={getLastTransactions(10)}
+              isLoading={isLoading}
+            />
           </Box>
         </Box>
       </Box>

@@ -13,12 +13,32 @@ interface Transaction {
 
 interface TransactionTableProps {
   transactions: Transaction[];
+  isLoading?: boolean;
 }
 
 export default function TransactionTable({
   transactions,
+  isLoading = false,
 }: TransactionTableProps) {
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  if (isLoading) {
+    return (
+      <Box
+        w="100%"
+        borderRadius="md"
+        bg="white"
+        shadow="md"
+        p={4}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        minH="200px"
+      >
+        Carregando...
+      </Box>
+    );
+  }
 
   return (
     <Box w="100%" borderRadius="md" bg="white" shadow="md" p={4}>

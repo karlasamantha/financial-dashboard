@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 
 const SidebarContainer = styled.aside`
   width: 250px;
-  height: 100vh;
   border-right: 1px solid var(--chakra-colors-gray-200);
   display: flex;
   flex-direction: column;
@@ -27,9 +26,6 @@ const SidebarContent = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1rem;
-  flex: 1 1 0%;
-  min-height: 0;
-  overflow-y: auto;
 `;
 
 const SidebarFooter = styled.footer`

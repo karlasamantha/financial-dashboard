@@ -16,9 +16,15 @@ interface LineChartProps {
   data: Array<{ date: string; balance: number }>;
   title: string;
   flex?: number;
+  isLoading?: boolean;
 }
 
-export default function LineChart({ data, title, flex = 1 }: LineChartProps) {
+export default function LineChart({
+  data,
+  title,
+  flex = 1,
+  isLoading = false,
+}: LineChartProps) {
   const chart = useChart({
     data,
     series: [{ name: 'balance', color: 'purple' }],
@@ -31,54 +37,64 @@ export default function LineChart({ data, title, flex = 1 }: LineChartProps) {
           {title}
         </Heading>
       </Box>
-
-      <Chart.Root maxH="sm" chart={chart}>
-        <RechartsLineChart data={chart.data}>
-          <CartesianGrid stroke={chart.color('border')} vertical={false} />
-          <XAxis
-            axisLine={false}
-            dataKey={chart.key('date')}
-            tickFormatter={(value) => {
-              if (typeof value === 'string' && value.length >= 10) {
-                const [, month, day] = value.split('-');
-                return `${day}/${month}`;
-              }
-              return value;
-            }}
-            stroke={chart.color('border')}
-          />
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tickMargin={10}
-            tickFormatter={chart.formatNumber({
-              style: 'currency',
-              currency: 'BRL',
-              notation: 'compact',
-            })}
-            stroke={chart.color('border')}
-          />
-          <Tooltip
-            animationDuration={100}
-            cursor={false}
-            content={<Chart.Tooltip />}
-          />
-          <Legend
-            formatter={() => 'Saldo Acumulado'}
-            content={<Chart.Legend />}
-          />
-          {chart.series.map((item) => (
-            <Line
-              key={item.name}
-              isAnimationActive={false}
-              dataKey={chart.key(item.name)}
-              fill={chart.color(item.color)}
-              stroke={chart.color(item.color)}
-              strokeWidth={2}
+      {isLoading ? (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          minH="200px"
+        >
+          Carregando...
+        </Box>
+      ) : (
+        <Chart.Root maxH="sm" chart={chart}>
+          <RechartsLineChart data={chart.data}>
+            <CartesianGrid stroke={chart.color('border')} vertical={false} />
+            <XAxis
+              axisLine={false}
+              dataKey={chart.key('date')}
+              tickFormatter={(value) => {
+                if (typeof value === 'string' && value.length >= 10) {
+                  const [, month, day] = value.split('-');
+                  return `${day}/${month}`;
+                }
+                return value;
+              }}
+              stroke={chart.color('border')}
             />
-          ))}
-        </RechartsLineChart>
-      </Chart.Root>
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tickMargin={10}
+              tickFormatter={chart.formatNumber({
+                style: 'currency',
+                currency: 'BRL',
+                notation: 'compact',
+              })}
+              stroke={chart.color('border')}
+            />
+            <Tooltip
+              animationDuration={100}
+              cursor={false}
+              content={<Chart.Tooltip />}
+            />
+            <Legend
+              formatter={() => 'Saldo Acumulado'}
+              content={<Chart.Legend />}
+            />
+            {chart.series.map((item) => (
+              <Line
+                key={item.name}
+                isAnimationActive={false}
+                dataKey={chart.key(item.name)}
+                fill={chart.color(item.color)}
+                stroke={chart.color(item.color)}
+                strokeWidth={2}
+              />
+            ))}
+          </RechartsLineChart>
+        </Chart.Root>
+      )}
     </Box>
   );
 }
