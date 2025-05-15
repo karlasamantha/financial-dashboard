@@ -21,6 +21,8 @@ const Input = styled.input`
   padding: 0.5rem;
   border-radius: 0.25rem;
   border: 1px solid var(--chakra-colors-gray-100);
+  background-color: var(--chakra-colors-white);
+  color: var(--chakra-colors-indigo);
 
   &::placeholder {
     color: var(--chakra-colors-indigo-200);

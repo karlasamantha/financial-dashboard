@@ -1,7 +1,8 @@
 # Financial Dashboard para BIX Tecnologia
+
 Um projeto para o code challenge da BIX Tecnologia.
 
-## Tecnologias Usadas
+## Tecnologias utilizadas
 
 - Next.js 15
 - React 19
@@ -15,7 +16,7 @@ Um projeto para o code challenge da BIX Tecnologia.
 - Typescript
 - Jest
 
-## Estrutura de Pastas
+## Estrutura
 
 ```
 src/
@@ -64,7 +65,7 @@ test/
     useTransactionsData.test.ts
 ```
 
-## Login do Usuário
+## Login
 
 Use as seguintes credenciais para acessar o dashboard:
 
@@ -72,6 +73,8 @@ Use as seguintes credenciais para acessar o dashboard:
 - **Senha:** 123456
 
 ## Instalação e Execução
+
+- Node v22.13.1
 
 1. **Clone o repositório:**
    ```bash
@@ -81,14 +84,25 @@ Use as seguintes credenciais para acessar o dashboard:
 2. **Instale as dependências:**
    ```bash
    npm install
-   # ou
-   yarn install
    ```
-3. **Rode o projeto em modo desenvolvimento:**
+3. **Adicione o secret no env**
+   Crie um arquivo `.env.local` na raiz do projeto e adicione:
+
+   ```
+   SESSION_SECRET=123456
+   ```
+
+4. **Rode o projeto em modo desenvolvimento:**
    ```bash
    npm run dev
-   # ou
-   yarn dev
    ```
-4. **Acesse no navegador:**
+5. **Acesse no navegador:**
    http://localhost:3000
+
+## Testes
+
+Para rodar os testes unitários use o comando:
+
+```bash
+npm run test
+```
