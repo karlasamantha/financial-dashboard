@@ -24,16 +24,39 @@ export function useTransactionsData() {
   const { filters } = useFilters();
   const { startDateParam, endDateParam, account, industry, state } = filters;
 
+  const [allDataCache, setAllDataCache] = React.useState<Transaction[] | null>(
+    null
+  );
+
   const endpoint = `/api/data`;
-  const { data, error, isLoading } = useSWR<{
+  const { data, error, isLoading, mutate } = useSWR<{
     data: Transaction[];
   }>(endpoint, fetcher, { dedupingInterval: 3600 * 1000 });
 
+  React.useEffect(() => {
+    if (
+      data?.data &&
+      !startDateParam &&
+      !endDateParam &&
+      !account &&
+      !industry &&
+      !state
+    ) {
+      setAllDataCache(data.data);
+    }
+  }, [data, startDateParam, endDateParam, account, industry, state]);
+
   // Aplicar filtros do dashboard
   const filteredTransactions = React.useMemo(() => {
-    if (!data?.data) return [];
+    // Se não há filtros ativos, use o cache local se disponível
+    const noFilters =
+      !startDateParam && !endDateParam && !account && !industry && !state;
+    const baseData = noFilters
+      ? allDataCache || data?.data || []
+      : data?.data || [];
+    if (!baseData) return [];
 
-    return data.data.filter((transaction) => {
+    return baseData.filter((transaction) => {
       const transactionDate = new Date(transaction.date).getTime();
 
       const startTimestamp = startDateParam
@@ -51,7 +74,15 @@ export function useTransactionsData() {
       const byState = !state || transaction.state === state;
       return inRange && byAccount && byIndustry && byState;
     });
-  }, [data, startDateParam, endDateParam, account, industry, state]);
+  }, [
+    data,
+    allDataCache,
+    startDateParam,
+    endDateParam,
+    account,
+    industry,
+    state,
+  ]);
 
   // Cálculo de resumo de cada transação
   const summaryData = React.useMemo(() => {
@@ -178,5 +209,6 @@ export function useTransactionsData() {
     groupedByMonth,
     balanceOverTime,
     getLastTransactions,
+    mutate,
   };
 }

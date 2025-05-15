@@ -33,6 +33,7 @@ import { useFilters } from '@/context/FilterContext';
 export default function DashboardPage() {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isClearing, setIsClearing] = useState(false);
 
   const { filters, setFilters } = useFilters();
   const {
@@ -56,6 +57,20 @@ export default function DashboardPage() {
   const states = createListCollection({
     items: uniqueCollections.states.map((s) => ({ label: s, value: s })),
   });
+
+  const handleClearFilters = async () => {
+    setIsClearing(true);
+    setFilters({
+      startDateParam: null,
+      endDateParam: null,
+      account: null,
+      industry: null,
+      state: null,
+    });
+    setTimeout(() => {
+      setIsClearing(false);
+    }, 300);
+  };
 
   return (
     <>
@@ -106,7 +121,7 @@ export default function DashboardPage() {
               title="Depósitos"
               description="Depósitos no período"
               value={
-                isLoading
+                isLoading || isClearing
                   ? '...'
                   : formatCurrencyBRL(summaryData?.deposits ?? 0)
               }
@@ -118,7 +133,7 @@ export default function DashboardPage() {
               title="Saques"
               description="Saques no período"
               value={
-                isLoading
+                isLoading || isClearing
                   ? '...'
                   : formatCurrencyBRL(summaryData?.withdrawals ?? 0)
               }
@@ -129,7 +144,11 @@ export default function DashboardPage() {
             <StatsCard
               title="Pendências"
               description="Transações pendentes"
-              value={isLoading ? '...' : String(summaryData?.pendingCount ?? 0)}
+              value={
+                isLoading || isClearing
+                  ? '...'
+                  : String(summaryData?.pendingCount ?? 0)
+              }
               icon={<Icon as={CalendarCheck2} color="yellow" size="md" />}
               color="yellow"
               flex={1}
@@ -138,7 +157,9 @@ export default function DashboardPage() {
               title="Balanço"
               description="Saldo total"
               value={
-                isLoading ? '...' : formatCurrencyBRL(summaryData?.balance ?? 0)
+                isLoading || isClearing
+                  ? '...'
+                  : formatCurrencyBRL(summaryData?.balance ?? 0)
               }
               icon={<Icon as={Wallet} color="purple" size="md" />}
               color="purple"
@@ -233,17 +254,9 @@ export default function DashboardPage() {
                 size="sm"
                 flex={1}
                 minW={100}
-                onClick={() =>
-                  setFilters({
-                    startDateParam: null,
-                    endDateParam: null,
-                    account: null,
-                    industry: null,
-                    state: null,
-                  })
-                }
-                loading={isLoading}
-                disabled={isLoading}
+                onClick={handleClearFilters}
+                loading={isLoading || isClearing}
+                disabled={isLoading || isClearing}
               >
                 Limpar
               </Button>
@@ -260,13 +273,13 @@ export default function DashboardPage() {
               groupedByMonth={groupedByMonth}
               title="Depósitos x Saques"
               flex={1}
-              isLoading={isLoading}
+              isLoading={isLoading || isClearing}
             />
             <LineChart
               data={balanceOverTime}
               title="Saldo Acumulado"
               flex={1}
-              isLoading={isLoading}
+              isLoading={isLoading || isClearing}
             />
           </Box>
 
@@ -278,7 +291,7 @@ export default function DashboardPage() {
           >
             <TransactionTable
               transactions={paginatedItems}
-              isLoading={isLoading}
+              isLoading={isLoading || isClearing}
             />
           </Box>
 
