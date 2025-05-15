@@ -44,7 +44,7 @@ const SubmitBtn = styled.button`
   font-weight: 600;
 
   &:hover {
-    background-color: var(--chakra-colors-indigo-600);
+    background-color: var(--chakra-colors-indigo-500);
   }
 `;
 

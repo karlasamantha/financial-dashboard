@@ -2,12 +2,19 @@ import { defineConfig, createSystem, defaultConfig } from '@chakra-ui/react';
 
 export const theme = defineConfig({
   theme: {
+    breakpoints: {
+      sm: '600px',
+      md: '900px',
+    },
     tokens: {
       colors: {
         purple: { value: '#c7cee8' },
         indigo: {
           100: { value: '#e2e8f0' },
           200: { value: '#64748B' },
+          300: { value: '#475569' },
+          400: { value: '#334155' },
+          500: { value: '#1e293b' },
           600: { value: '#2a3149' },
           DEFAULT: { value: '#21263a' },
         },
