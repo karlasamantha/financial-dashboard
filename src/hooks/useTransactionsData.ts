@@ -16,6 +16,10 @@ interface Transaction {
   state: string;
 }
 
+interface TransactionWithFormattedAmount extends Transaction {
+  amountFormatted: number;
+}
+
 export function useTransactionsData() {
   const { filters } = useFilters();
   const { startDateParam, endDateParam, account, industry, state } = filters;
@@ -56,7 +60,7 @@ export function useTransactionsData() {
       pendingCount = 0;
 
     filteredTransactions.forEach(({ amount, transaction_type }) => {
-      const val = parseInt(amount, 10) / 100;
+      const val = parseInt(amount as string, 10) / 100;
       if (amount === '0') {
         pendingCount++;
       } else if (transaction_type === 'deposit') {
@@ -95,7 +99,7 @@ export function useTransactionsData() {
     >;
 
     filteredTransactions.forEach(({ date, amount, transaction_type }) => {
-      const value = parseInt(amount, 10) / 100;
+      const value = parseInt(amount as string, 10) / 100;
       if (isNaN(value) || value === 0) return;
 
       const transactionDate = new Date(date);
@@ -123,7 +127,7 @@ export function useTransactionsData() {
 
     let accumulatedBalance = 0;
     return sorted.map(({ date, amount, transaction_type }) => {
-      const value = parseInt(amount, 10) / 100;
+      const value = parseInt(amount as string, 10) / 100;
       if (transaction_type === 'deposit') accumulatedBalance += value;
       else if (transaction_type === 'withdraw')
         accumulatedBalance -= Math.abs(value);
@@ -134,10 +138,14 @@ export function useTransactionsData() {
   }, [filteredTransactions]);
 
   // Retorna as n últimas transações filtradas, ordenadas por data decrescente
-  function getLastTransactions(n: number) {
+  function getLastTransactions(n: number): TransactionWithFormattedAmount[] {
     return [...filteredTransactions]
       .sort((a, b) => b.date - a.date)
-      .slice(0, n);
+      .slice(0, n)
+      .map((transaction) => ({
+        ...transaction,
+        amountFormatted: parseInt(transaction.amount, 10) / 100,
+      }));
   }
 
   return {

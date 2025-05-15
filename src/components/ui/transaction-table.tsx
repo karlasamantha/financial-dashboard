@@ -8,6 +8,7 @@ interface Transaction {
   account: string;
   industry: string;
   state: string;
+  amountFormatted: number;
 }
 
 interface TransactionTableProps {
@@ -57,7 +58,7 @@ export default function TransactionTable({
                 {t.transaction_type === 'deposit' ? 'Depósito' : 'Saque'}
               </Table.Cell>
               <Table.Cell textAlign="end">
-                {Number(t.amount).toLocaleString('pt-BR', {
+                {t.amountFormatted.toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: t.currency || 'BRL',
                 })}

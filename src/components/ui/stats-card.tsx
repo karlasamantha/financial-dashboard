@@ -27,7 +27,6 @@ export default function StatsCard({
       borderRadius="md"
       boxShadow="md"
       bg="white"
-      maxWidth={{ base: '100%', md: '300px' }}
       width="100%"
       flex={flex}
     >

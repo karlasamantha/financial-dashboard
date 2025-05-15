@@ -97,6 +97,7 @@ export default function DashboardPage() {
             display="flex"
             flexDirection={{ base: 'column', md: 'row' }}
             gap={4}
+            width="100%"
           >
             <StatsCard
               title="Depósitos"
