@@ -148,6 +148,11 @@ export function useTransactionsData() {
       .map(([month, vals]) => ({ month, ...vals }));
   }, [filteredTransactions]);
 
+  // Versão limitada para gráfico: últimos 12 meses
+  const groupedByMonthChart = React.useMemo(() => {
+    return groupedByMonth.slice(-12);
+  }, [groupedByMonth]);
+
   // Saldo acumulado ao longo do tempo
   const balanceOverTime = React.useMemo(() => {
     const sorted = [...filteredTransactions].sort((a, b) => {
@@ -168,6 +173,11 @@ export function useTransactionsData() {
     });
   }, [filteredTransactions]);
 
+  // Versão limitada para gráfico: últimos 365 dias
+  const balanceOverTimeChart = React.useMemo(() => {
+    return balanceOverTime.slice(-365);
+  }, [balanceOverTime]);
+
   // Retorna as n últimas transações filtradas, ordenadas por data decrescente
   function getLastTransactions(n: number): TransactionWithFormattedAmount[] {
     return [...filteredTransactions]
@@ -181,7 +191,7 @@ export function useTransactionsData() {
 
   // Paginação client-side
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(20); // 20 por página por padrão
+  const [pageSize, setPageSize] = React.useState(20); //20 por página por padrão
 
   const totalPages = Math.ceil(filteredTransactions.length / pageSize);
 
@@ -207,7 +217,9 @@ export function useTransactionsData() {
     summaryData,
     uniqueCollections,
     groupedByMonth,
+    groupedByMonthChart,
     balanceOverTime,
+    balanceOverTimeChart,
     getLastTransactions,
     mutate,
   };

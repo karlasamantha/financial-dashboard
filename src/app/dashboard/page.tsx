@@ -40,8 +40,8 @@ export default function DashboardPage() {
     summaryData,
     isLoading,
     uniqueCollections,
-    groupedByMonth,
-    balanceOverTime,
+    groupedByMonthChart,
+    balanceOverTimeChart,
     paginatedItems,
     currentPage,
     setCurrentPage,
@@ -270,13 +270,13 @@ export default function DashboardPage() {
             gap={4}
           >
             <BarChart
-              groupedByMonth={groupedByMonth}
+              groupedByMonth={groupedByMonthChart}
               title="Depósitos x Saques"
               flex={1}
               isLoading={isLoading || isClearing}
             />
             <LineChart
-              data={balanceOverTime}
+              data={balanceOverTimeChart}
               title="Saldo Acumulado"
               flex={1}
               isLoading={isLoading || isClearing}
